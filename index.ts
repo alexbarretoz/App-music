@@ -45,3 +45,24 @@ app.get("/users", async (req: Request,res: Response) => {
   const user = await prisma.usuarios.findMany();
   return res.json(user);
 });
+
+
+// crear Playlist
+app.post("/createPlaylist", async (req: Request,res: Response) => {
+  const { name, useremail} = req.body;
+  const result = await prisma.playlist.create({
+      data: {
+        name: name,
+        user: {connect: {email :useremail}},
+      },
+  });
+  res.json(result)    
+});
+
+
+
+
+
+
+
+

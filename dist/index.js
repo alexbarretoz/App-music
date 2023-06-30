@@ -44,3 +44,18 @@ app.post("/createUser", (req, res) => __awaiter(void 0, void 0, void 0, function
     // Retorna la informacion
     res.json(result);
 }));
+app.get("/users", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield prisma.usuarios.findMany();
+    return res.json(user);
+}));
+// crear Playlist
+app.post("/createPlaylist", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name, useremail } = req.body;
+    const result = yield prisma.playlist.create({
+        data: {
+            name: name,
+            user: { connect: { email: useremail } },
+        },
+    });
+    res.json(result);
+}));
