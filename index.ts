@@ -94,5 +94,21 @@ app.get("/songs", async (req: Request,res: Response) => {
 });
 
 
+// buscar cancion por id
+app.post('/songs/:id', async (req:Request, res:Response) => {
+    const {id} = req.params 
+    const songs = await prisma.song.findUnique({
+      where :{
+        id: Number(id)
+      },
+      select:{
+        id:true,
+        name: true,
+        artist: true,
+        album: true
+      }
+    });
+    res.json(songs);
+});
 
 
