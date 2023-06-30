@@ -59,6 +59,17 @@ app.post("/createPlaylist", async (req: Request,res: Response) => {
   res.json(result)    
 });
 
+// listar playlist
+app.get("/playlists", async (req: Request,res: Response) => {
+  const songs = await prisma.playlist.findMany({select:{
+      id:true,
+      name:true,
+      userId: true,
+      songs:true
+  }});
+  return res.json(songs);
+});
+
 
 
 
