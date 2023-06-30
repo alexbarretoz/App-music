@@ -87,7 +87,11 @@ app.post("/createSong", async (req: Request,res: Response) => {
     res.json(result)        
 });
 
-
+//listar canciones
+app.get("/songs", async (req: Request,res: Response) => {
+    const songs = await prisma.song.findMany();
+    return res.json(songs);
+});
 
 
 
