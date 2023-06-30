@@ -70,7 +70,22 @@ app.get("/playlists", async (req: Request,res: Response) => {
   return res.json(songs);
 });
 
-
+// Crear canciones
+app.post("/createSong", async (req: Request,res: Response) => {
+    const {name, artist, album, year, genre, duration, nameplaylist } = req.body;
+    const result = await prisma.song.create({
+        data: {
+          name: name,
+          artist:artist,
+          album:album,
+          year:year,
+          genre:genre,
+          duration:duration,
+          playlist: {connect: {name:nameplaylist}},
+        },
+    });
+    res.json(result)        
+});
 
 
 
