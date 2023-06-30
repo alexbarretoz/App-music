@@ -40,3 +40,8 @@ app.post("/createUser", async (req: Request,res: Response) => {
   // Retorna la informacion
   res.json(result)
 });
+
+app.get("/users", async (req: Request,res: Response) => {
+  const user = await prisma.usuarios.findMany();
+  return res.json(user);
+});
