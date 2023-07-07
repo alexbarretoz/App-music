@@ -16,7 +16,6 @@ app.use(express.json());
 
 // primera ruta
 
-// primera ruta
 app.get('/', (req: Request, res: Response) => {
   res.send('HOLA!!');
 });
@@ -47,20 +46,23 @@ app.get("/users", async (req: Request,res: Response) => {
 });
 
 
+
 // crear Playlist
-app.post("/createPlaylist", async (req: Request,res: Response) => {
-  const { name, useremail} = req.body;
-  const result = await prisma.playlist.create({
-      data: {
-        name: name,
-        user: {connect: {email :useremail}},
-      },
-  });
-  res.json(result)    
+
+app.post("/createPlaylis", async (req: Request,res: Response) => {
+
+    const { name, useremail  } = req.body;
+    const result = await prisma.playlist.create({
+        data: {
+          name: name,
+          user: {connect: {email :useremail}},
+        },
+    });
+    res.json(result)    
 });
 
 // listar playlist
-app.get("/playlists", async (req: Request,res: Response) => {
+app.get("", async (req: Request,res: Response) => {
   const songs = await prisma.playlist.findMany({select:{
       id:true,
       name:true,
@@ -70,45 +72,44 @@ app.get("/playlists", async (req: Request,res: Response) => {
   return res.json(songs);
 });
 
+
 // Crear canciones
 app.post("/createSong", async (req: Request,res: Response) => {
-    const {name, artist, album, year, genre, duration, nameplaylist } = req.body;
-    const result = await prisma.song.create({
-        data: {
-          name: name,
-          artist:artist,
-          album:album,
-          year:year,
-          genre:genre,
-          duration:duration,
-          playlist: {connect: {name:nameplaylist}},
-        },
-    });
-    res.json(result)        
+  const {name, artist, album, year, genre, duration, nameplaylist } = req.body;
+  const result = await prisma.song.create({
+      data: {
+        name: name,
+        artist:artist,
+        album:album,
+        year:year,
+        genre:genre,
+        duration:duration,
+        playlist: {connect: {name:nameplaylist}},
+      },
+  });
+  res.json(result)        
 });
 
 //listar canciones
 app.get("/songs", async (req: Request,res: Response) => {
-    const songs = await prisma.song.findMany();
-    return res.json(songs);
+  const songs = await prisma.song.findMany();
+  return res.json(songs);
 });
 
 
 // buscar cancion por id
 app.post('/songs/:id', async (req:Request, res:Response) => {
-    const {id} = req.params 
-    const songs = await prisma.song.findUnique({
-      where :{
-        id: Number(id)
-      },
-      select:{
-        id:true,
-        name: true,
-        artist: true,
-        album: true
-      }
-    });
-    res.json(songs);
+  const {id} = req.params 
+  const songs = await prisma.song.findUnique({
+    where :{
+      id: Number(id)
+    },
+    select:{
+      id:true,
+      name: true,
+      artist: true,
+      album: true
+    }
+  });
+  res.json(songs);
 });
-
-
