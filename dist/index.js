@@ -22,7 +22,6 @@ const app = (0, express_1.default)();
 const port = process.env.PORT;
 app.use(express_1.default.json());
 // primera ruta
-// primera ruta
 app.get('/', (req, res) => {
     res.send('HOLA!!');
 });
@@ -48,6 +47,23 @@ app.get("/users", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield prisma.usuarios.findMany();
     return res.json(user);
 }));
+//Crear Login
+app.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = req.body;
+    const user = yield prisma.usuarios.findUnique({
+        where: {
+            email: email,
+        }
+    });
+    if (user) {
+        const validatePassword = yield bcryptjs_1.default.compare(password, user === null || user === void 0 ? void 0 : user.password);
+        //console.log(validatePassword)
+        validatePassword ? res.json("Usuario logueado") : res.json("Contraseña incorrecta");
+    }
+    else {
+        res.json("El email no existe");
+    }
+}));
 // crear Playlist
 app.post("/createPlaylis", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, useremail } = req.body;
@@ -60,7 +76,7 @@ app.post("/createPlaylis", (req, res) => __awaiter(void 0, void 0, void 0, funct
     res.json(result);
 }));
 // listar playlist
-app.get("", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/allplay", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const songs = yield prisma.playlist.findMany({ select: {
             id: true,
             name: true,
