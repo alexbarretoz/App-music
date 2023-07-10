@@ -46,6 +46,24 @@ app.get("/users", async (req: Request,res: Response) => {
 });
 
 
+//Crear Login
+app.post("/login",async (req:Request, res:Response) => {
+    const {email,password} = req.body;
+    const user = await prisma.usuarios.findUnique({
+      where :{
+        email:email,
+      }
+    });
+    if (user) {
+      const validatePassword = await bcrypt.compare(password, user?.password as string)
+      //console.log(validatePassword)
+      validatePassword ? res.json("Usuario logueado") : res.json("Contraseña incorrecta")
+    }else{
+      res.json("El email no existe")
+    }
+})
+
+
 
 // crear Playlist
 
