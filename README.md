@@ -18,6 +18,9 @@ Como Usar:
 - npm run dev
 
 
+### Creando un Usuario
+<img src="https://github.com/alexbarretoz/App-music/blob/main/usuario.png">
+
 
 
 
